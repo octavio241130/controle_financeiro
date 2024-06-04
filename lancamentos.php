@@ -1,5 +1,13 @@
 <?php
 include 'conexao.php';
+
+
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit();
+}
+
+echo "Bem-vindo, " . $_SESSION['usuario'];
 if (isset($_POST['submit'])){
     $descricao = $_POST ['descricao'];
     $valor = $_POST['valor'];
@@ -19,10 +27,12 @@ if (isset($_POST['submit'])){
 ?>
 <!DOCTYPE html> 
 <html lang="pt-br"> 
-<head> 
+<head>
+    <link rel="stylesheet" href="css/estilo.css">  
     <meta charset="UTF-8"> 
     <title>Cadastro de Despesas</title> 
 </head> 
+
 <body>
     <a href="index.php"><button>Voltar</button></a>
     <h2>Lancamentos</h2> 
@@ -52,7 +62,7 @@ if (isset($_POST['submit'])){
         <?php
         $sql = "SELECT descricao, valor, tipo, data, fixa FROM lancamentos";
         foreach ($conn->query($sql) as $row) {
-            echo "<tr>
+            echo "<tr class='{$row['tipo']}'>
                     <td>{$row['descricao']}</td>
                     <td>R$ {$row['valor']}</td>
                     <td>{$row['tipo']}</td>
